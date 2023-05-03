@@ -1,7 +1,9 @@
 import pyaudio
 import numpy as np
-import sys, csv, time
-import urllib.request
+import sys
+import csv
+import time
+import json
 import os
 name = os.path.basename(__file__)
 
@@ -31,11 +33,7 @@ fs = 44100       # sampling rate, Hz, must be integer
 duration = 10.0  # in seconds, may be float
 f = 256.0        # sine frequency, Hz, may be float
 
-environments = {"water" : 1480,
-                "air" : 345,
-                "steel" : 5960,
-                "rock" : 4470.4,
-                "vacuum" : 0}
+environments = json.load(open('environments.json', mode='r', encoding='utf-8'))
 
 c = "water" # Current environment
 
@@ -129,6 +127,8 @@ def song_player():
 
 def environment_changer():
     global c, environments, mode, modes
+    
+    environments = json.load(open('environments.json', mode='r', encoding='utf-8'))
 
     try:
         delayPrint(f'Current Medium - {c}\n')
